@@ -4,10 +4,12 @@ import { AuthContext } from "../../context/authContext";
 import { makeRequest } from "../../axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const Comments = ({ postId }) => {
   const [desc, setDesc] = useState("");
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const { isLoading, error, data } = useQuery(["comments"], () =>
     makeRequest.get("/comments?postId=" + postId).then((res) => {
@@ -34,10 +36,22 @@ const Comments = ({ postId }) => {
     setDesc("");
   };
 
+  const handleNavigate = (id) => {
+    navigate("/profile/" + id);
+  };
+  console.log(data);
+
   return (
     <div className="comments">
       <div className="write">
-        <img src={currentUser.profilePic} alt="" />
+        <img
+          src={
+            currentUser.profilePic
+              ? "upload/" + currentUser.profilePic
+              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          }
+          alt=""
+        />
         <input
           type="text"
           placeholder="write a comment"
@@ -46,13 +60,27 @@ const Comments = ({ postId }) => {
         />
         <button onClick={handleClick}>Send</button>
       </div>
+      {error && <p>Error loading Comments</p>}
+
       {isLoading
         ? "Loading"
-        : data.map((comment) => (
+        : data?.map((comment) => (
             <div className="comment" key={comment.id}>
-              <img src={comment.profilePic} alt="" />
+              <img
+                src={
+                  comment.profilePic
+                    ? "upload/" + comment.profilePic
+                    : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                }
+                alt="comment"
+              />
               <div className="info">
-                <span>{comment.name}</span>
+                <span
+                  onClick={() => handleNavigate(comment.comment_user_id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {comment.name}
+                </span>
                 <p>{comment.description}</p>
               </div>
               <span className="date">

@@ -7,14 +7,26 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 
 const Navbar = () => {
   const { toggle, darkMode } = useContext(DarkModeContext);
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [toggleLogout, setToggleLogout] = useState(false);
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("user");
+      navigate("/login");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="navbar">
@@ -43,8 +55,11 @@ const Navbar = () => {
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <div className="user">
-          <img src={currentUser.profilePic} alt="" />
-          <span>{currentUser.name}</span>
+          {toggleLogout && <div onClick={handleLogout}>LOGOUT</div>}
+          <img src={"/upload/" + currentUser.profilePic} alt="" />
+          <span onClick={() => setToggleLogout(!toggleLogout)}>
+            {currentUser.name}
+          </span>
         </div>
       </div>
     </div>

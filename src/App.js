@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import {
   createBrowserRouter,
   Navigate,
@@ -15,13 +16,6 @@ import Login from "./pages/login/Login";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
 import "./style.scss";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "react-query";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -44,12 +38,12 @@ function App() {
       </QueryClientProvider>
     );
   };
-  // console.log(document.cookie.accessToken);
 
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
       return <Navigate to="/login" />;
     }
+
     return children;
   };
 
@@ -74,7 +68,7 @@ function App() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: currentUser ? <Navigate to="/" /> : <Login />,
     },
     {
       path: "/register",

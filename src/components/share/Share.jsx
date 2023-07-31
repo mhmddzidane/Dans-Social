@@ -44,13 +44,21 @@ const Share = () => {
     setDesc("");
     setFile(null);
   };
+  // console.log(currentUser);
 
   return (
     <div className="share">
       <div className="container">
         <div className="top">
           <div className="left">
-            <img src={currentUser.profilePic} alt="" />
+            <img
+              src={
+                currentUser.profilePic
+                  ? "/upload/" + currentUser.profilePic
+                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              }
+              alt=""
+            />
             <input
               type="text"
               placeholder={`What's on your mind ${currentUser.name}?`}

@@ -75,7 +75,14 @@ const Post = ({ post }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={"/upload/" + post?.profilePic} alt="" />
+            <img
+              src={
+                post?.profilePic
+                  ? "/upload/" + post?.profilePic
+                  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              }
+              alt=""
+            />
             <div className="details">
               <Link
                 to={`/profile/${post.userId}`}
@@ -108,7 +115,7 @@ const Post = ({ post }) => {
             ) : (
               <FavoriteBorderOutlinedIcon onClick={handleLike} />
             )}
-            {isLoading ? "Loading" : data.length}
+            {error ? "0" : data?.length}
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />

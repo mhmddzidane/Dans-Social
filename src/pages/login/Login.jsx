@@ -23,6 +23,7 @@ const Login = () => {
       navigate("/");
     } catch (err) {
       setErr(err);
+      navigate("/login");
     }
   };
 
@@ -56,7 +57,7 @@ const Login = () => {
               name="password"
               onChange={handleChange}
             />
-            {err && <p>{err.response.data}</p>}
+            {err && <p>Kesalahan saat Login</p>}
             <button onClick={handleLogin}>Login</button>
           </form>
         </div>

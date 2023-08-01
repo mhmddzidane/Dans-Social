@@ -25,26 +25,47 @@
         color: themed("logo");
       }
 
-      .search {
+      .searchComponent {
         display: flex;
-        align-items: center;
-        gap: 10px;
-        border: 1px solid themed("border");
-        border-radius: 5px;
-        padding: 5px;
+        flex-direction: column;
+        position: relative;
 
-        input {
-          border: none;
-          width: 500px;
-          background-color: transparent;
-          color: themed("textColor");
+        .search {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          border: 1px solid themed("border");
+          border-radius: 5px;
+          padding: 5px;
 
-          @include mobile {
-            display: none;
+          input {
+            border: none;
+            width: 500px;
+            background-color: transparent;
+            color: themed("textColor");
+
+            @include mobile {
+              display: none;
+            }
+
+            @include tablet {
+              width: 200px;
+            }
           }
+        }
+        .searchUser {
+          position: absolute;
+          background-color: themed("bg");
+          width: 100%;
+          border-radius: 5px;
+          padding: 5px;
+          margin-top: 50px;
 
-          @include tablet {
-            width: 200px;
+          img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
           }
         }
       }

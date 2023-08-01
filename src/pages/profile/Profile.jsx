@@ -9,7 +9,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useLocation } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -22,11 +22,17 @@ const Profile = () => {
 
   const userId = parseInt(useLocation().pathname.split("/")[2]);
 
-  const { isLoading, error, data } = useQuery(["user"], () =>
+  const { isLoading, error, data, refetch } = useQuery(["user"], () =>
     makeRequest.get("/users/find/" + userId).then((res) => {
       return res.data;
     })
   );
+
+  useEffect(() => {
+    if (userId) {
+      refetch();
+    }
+  }, [userId, refetch]);
 
   const { data: relationshipData } = useQuery(["relationships"], () =>
     makeRequest.get("/relationships?followedUserId=" + userId).then((res) => {
@@ -57,9 +63,21 @@ const Profile = () => {
   return (
     <div className="profile">
       <div className="images">
-        <img src={"/upload/" + data?.coverPic} alt="" className="cover" />
         <img
-          src={"/upload/" + data?.profilePic}
+          src={
+            data?.coverPic
+              ? "/upload/" + data?.coverPic
+              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          }
+          alt=""
+          className="cover"
+        />
+        <img
+          src={
+            data?.profilePic
+              ? "/upload/" + data?.profilePic
+              : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          }
           alt=""
           className="profilePic"
         />

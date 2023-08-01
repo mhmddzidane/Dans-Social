@@ -97,6 +97,7 @@ const Share = () => {
             </div>
           </div>
           <div className="right">
+            {mutation.isLoading && <p>Uploading...</p>}
             <button onClick={handleClick}>Share</button>
           </div>
         </div>

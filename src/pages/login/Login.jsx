@@ -11,6 +11,7 @@ const Login = () => {
   });
   const [err, setErr] = useState(null);
   const { login } = useContext(AuthContext);
+  const [loading, setisLoading] = useState(false);
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -19,11 +20,15 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      setErr(null);
+      setisLoading(true);
       await login(inputs);
       navigate("/");
     } catch (err) {
       setErr(err);
       navigate("/login");
+    } finally {
+      setisLoading(false);
     }
   };
 
@@ -58,6 +63,7 @@ const Login = () => {
               onChange={handleChange}
             />
             {err && <p>Kesalahan saat Login</p>}
+            {loading && <p>loading...</p>}
             <button onClick={handleLogin}>Login</button>
           </form>
         </div>

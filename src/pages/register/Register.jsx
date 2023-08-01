@@ -10,6 +10,10 @@ const Register = () => {
     email: "",
     password: "",
     name: "",
+    city: "",
+    website: "",
+    profilePic: "",
+    coverPic: "",
   });
   const [error, setError] = useState(null);
 
@@ -17,11 +21,16 @@ const Register = () => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  console.log(input);
+
   const handleClick = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:8800/api/auth/register", input);
+      await axios.post(
+        "https://danssocial-api.vercel.app/api/auth/register",
+        input
+      );
       navigate("/login");
     } catch (error) {
       setError(error.response.data);

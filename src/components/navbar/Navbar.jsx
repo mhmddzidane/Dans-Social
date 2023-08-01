@@ -6,6 +6,7 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { makeRequest } from "../../axios";
@@ -20,11 +21,16 @@ const Navbar = () => {
   const [toggleLogout, setToggleLogout] = useState(false);
   const [search, setSearch] = useState("");
   const [searchData, setSearchData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
+      const res = await axios.post(
+        "https://danssocial-api.vercel.app/api/auth/logout"
+      );
       localStorage.removeItem("user");
-      navigate("/login");
+      console.log(res);
+      // navigate("/login");
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -34,10 +40,13 @@ const Navbar = () => {
   useEffect(() => {
     const searchUser = async () => {
       try {
+        setLoading(true);
         const res = await makeRequest.get("/users/search/" + search);
         setSearchData(res.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -87,7 +96,9 @@ const Navbar = () => {
           </div>
           {search != "" && (
             <div className="searchUser">
-              {searchData?.length > 0 ? (
+              {loading ? (
+                <p>searching username...</p>
+              ) : searchData?.length > 0 ? (
                 searchData.map((data) => (
                   <div
                     key={data.id}

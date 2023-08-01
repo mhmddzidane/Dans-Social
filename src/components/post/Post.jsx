@@ -70,6 +70,8 @@ const Post = ({ post }) => {
     deleteMutation.mutate(post.id);
   };
 
+  console.log(post);
+
   return (
     <div className="post">
       <div className="container">
@@ -103,7 +105,7 @@ const Post = ({ post }) => {
         </div>
         <div className="content">
           <p>{post.description}</p>
-          <img src={"./upload/" + post.img} alt="" />
+          {post?.img && <img src={"../upload/" + post.img} alt="img" />}
         </div>
         <div className="info">
           <div className="item">
